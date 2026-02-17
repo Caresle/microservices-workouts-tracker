@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "microservices-workouts-tracker-api",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
