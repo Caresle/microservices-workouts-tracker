@@ -3,6 +3,8 @@ module github.com/caresle/microservices-workouts-tracker/user-service
 go 1.25.5
 
 require (
+	github.com/caresle/microservices-workouts-tracker/shared v0.0.0
+
 	github.com/bytedance/sonic v1.14.0 // indirect
 	github.com/bytedance/sonic/loader v0.3.0 // indirect
 	github.com/cloudwego/base64x v0.1.6 // indirect
@@ -40,3 +42,5 @@ require (
 	golang.org/x/tools v0.36.0 // indirect
 	google.golang.org/protobuf v1.36.9 // indirect
 )
+
+replace github.com/caresle/microservices-workouts-tracker/shared => ../shared
