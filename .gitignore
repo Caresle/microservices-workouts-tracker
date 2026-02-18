@@ -256,3 +256,6 @@ trace.out
 # GoReleaser
 dist/
 .goreleaser.yml.bak
+
+# Docker services local volumes
+/users-data/

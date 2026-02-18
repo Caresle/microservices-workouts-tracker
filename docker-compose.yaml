@@ -1,0 +1,17 @@
+services:
+  users-db:
+    image: postgres:17
+    container_name: users-db
+    environment:
+      POSTGRES_DB: users_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./users-data:/var/lib/postgresql/data
+    # healthcheck:
+    #   test: ["CMD-SHELL", "pg_isready -U postgres"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 5
