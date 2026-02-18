@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/caresle/microservices-workouts-tracker/user-service/routes"
 	"github.com/joho/godotenv"
 )
 
@@ -12,4 +13,7 @@ func main() {
 	if err != nil {
 		fmt.Println("Error loading .env file")
 	}
+
+	fmt.Println("Running user service....")
+	routes.Run()
 }
