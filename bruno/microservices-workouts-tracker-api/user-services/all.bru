@@ -1,0 +1,16 @@
+meta {
+  name: all
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}:8081/api/v1/
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
