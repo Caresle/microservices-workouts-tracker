@@ -8,11 +8,12 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-func Pg(query string, params ...any) pgx.Rows {
+func Pg(query string, params ...any) (pgx.Rows, error) {
 	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
 
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		return nil, err
 	}
 
 	defer conn.Close(context.Background())
@@ -27,7 +28,8 @@ func Pg(query string, params ...any) pgx.Rows {
 
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to query database: %v\n", err)
+		return nil, err
 	}
 
-	return result
+	return result, nil
 }
