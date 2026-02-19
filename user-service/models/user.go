@@ -1,16 +1,19 @@
 package models
 
-import "github.com/jackc/pgx/v5"
+import (
+	user_request "github.com/caresle/microservices-workouts-tracker/user-service/request"
+	"github.com/jackc/pgx/v5"
+)
 
 type User struct {
-	ID       int    `json:"id"`
-	Username string `json:"username"`
-	Email    string `json:"email"`
+	Id    int    `json:"id"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 func FromRowToUser(row pgx.Row) (*User, error) {
 	var user User
-	err := row.Scan(&user.ID, &user.Username, &user.Email)
+	err := row.Scan(&user.Id, &user.Name, &user.Email)
 
 	if err != nil {
 		return nil, err
@@ -33,4 +36,19 @@ func FromRowsToUsers(rows pgx.Rows) ([]*User, error) {
 	}
 
 	return users, nil
+}
+
+func FromCreateRequestToUser(request user_request.CreateUserRequest) *User {
+	return &User{
+		Name:  request.Name,
+		Email: request.Email,
+	}
+}
+
+func FromUpdateRequestToUser(request user_request.UpdateUserRequest) *User {
+	return &User{
+		Id:    request.Id,
+		Name:  request.Name,
+		Email: request.Email,
+	}
 }
