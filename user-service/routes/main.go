@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/caresle/microservices-workouts-tracker/shared"
@@ -46,6 +47,50 @@ func getRoutes() {
 		})
 	})
 
+	v1.GET("/:id", func(ctx *gin.Context) {
+		id, err := strconv.Atoi(ctx.Param("id"))
+
+		if err != nil {
+			ctx.JSON(400, shared.ApiResponse{
+				Errors: []shared.APIError{
+					{
+						Code:    "VALIDATION_ERROR",
+						Message: "Invalid user id",
+						Field:   "id",
+						Details: map[string]interface{}{
+							"error": err.Error(),
+						},
+					},
+				},
+				Timestamp: time.Now().Unix(),
+			})
+			return
+		}
+
+		user, err := queries.GetUserById(id)
+
+		if err != nil {
+			ctx.JSON(500, shared.ApiResponse{
+				Errors: []shared.APIError{
+					{
+						Code:    "INTERNAL_SERVER_ERROR",
+						Message: "Failed to get user",
+						Details: map[string]interface{}{
+							"error": err.Error(),
+						},
+					},
+				},
+				Timestamp: time.Now().Unix(),
+			})
+			return
+		}
+
+		ctx.JSON(200, shared.ApiResponse{
+			Data:      []any{user},
+			Timestamp: time.Now().Unix(),
+		})
+	})
+
 	v1.POST("/", func(ctx *gin.Context) {
 		var body user_request.CreateUserRequest
 
@@ -66,8 +111,8 @@ func getRoutes() {
 			return
 		}
 
-		userBody := models.FromCreateRequestToUser(body)
-		user, err := queries.CreateUser(*userBody)
+		userBody, password := models.FromCreateRequestToUser(body)
+		user, err := queries.CreateUser(*userBody, password)
 
 		if err != nil {
 			ctx.JSON(500, shared.ApiResponse{

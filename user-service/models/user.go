@@ -38,11 +38,11 @@ func FromRowsToUsers(rows pgx.Rows) ([]*User, error) {
 	return users, nil
 }
 
-func FromCreateRequestToUser(request user_request.CreateUserRequest) *User {
+func FromCreateRequestToUser(request user_request.CreateUserRequest) (*User, string) {
 	return &User{
 		Name:  request.Name,
 		Email: request.Email,
-	}
+	}, request.Password
 }
 
 func FromUpdateRequestToUser(request user_request.UpdateUserRequest) *User {
