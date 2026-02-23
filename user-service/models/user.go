@@ -22,6 +22,18 @@ func FromRowToUser(row pgx.Row) (*User, error) {
 	return &user, nil
 }
 
+func FromRowToUserWithPassword(row pgx.Row) (*User, string, error) {
+	var user User
+	var password string
+	err := row.Scan(&user.Id, &user.Name, &user.Email, &password)
+
+	if err != nil {
+		return nil, "", err
+	}
+
+	return &user, password, nil
+}
+
 func FromRowsToUsers(rows pgx.Rows) ([]*User, error) {
 	var users []*User
 
@@ -45,10 +57,10 @@ func FromCreateRequestToUser(request user_request.CreateUserRequest) (*User, str
 	}, request.Password
 }
 
-func FromUpdateRequestToUser(request user_request.UpdateUserRequest) *User {
+func FromUpdateRequestToUser(request user_request.UpdateUserRequest) (*User, string) {
 	return &User{
 		Id:    request.Id,
 		Name:  request.Name,
 		Email: request.Email,
-	}
+	}, request.Password
 }
