@@ -1,0 +1,16 @@
+meta {
+  name: remove by id
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{base_url}}:8081/api/v1/users/4
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
