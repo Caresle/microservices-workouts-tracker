@@ -1,8 +1,11 @@
 meta {
   name: user-services
-  seq: 2
 }
 
 auth {
-  mode: inherit
+  mode: bearer
+}
+
+auth:bearer {
+  token: {{bearer_token}}
 }
