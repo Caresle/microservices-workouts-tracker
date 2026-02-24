@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"os"
 
+	"github.com/caresle/microservices-workouts-tracker/api-gateway/middleware"
 	"github.com/joho/godotenv"
 )
 
@@ -23,10 +24,15 @@ func main() {
 
 	// TODO: Add auth middleware to all routes except /api/v1/users/auth and /api/v1/users/ `POST` (for registration)
 
-	mux.Handle("/api/v1/users/", AuthMiddleware(proxyTo(os.Getenv("USER_SERVICE_URL"))))
-	mux.Handle("/api/v1/workouts/", AuthMiddleware(proxyTo(os.Getenv("WORKOUT_SERVICE_URL"))))
-	mux.Handle("/api/v1/exercises/", AuthMiddleware(proxyTo(os.Getenv("EXERCISE_SERVICE_URL"))))
-	mux.Handle("/api/v1/analytics/", AuthMiddleware(proxyTo(os.Getenv("ANALYTICS_SERVICE_URL"))))
+	generalMiddlewares := []func(http.Handler) http.Handler{
+		middleware.RequestIDMiddleware,
+		middleware.AuthMiddleware,
+	}
+
+	mux.Handle("/api/v1/users/", middleware.ChainMiddleware(proxyTo(os.Getenv("USER_SERVICE_URL")), generalMiddlewares...))
+	mux.Handle("/api/v1/workouts/", middleware.ChainMiddleware(proxyTo(os.Getenv("WORKOUT_SERVICE_URL")), generalMiddlewares...))
+	mux.Handle("/api/v1/exercises/", middleware.ChainMiddleware(proxyTo(os.Getenv("EXERCISE_SERVICE_URL")), generalMiddlewares...))
+	mux.Handle("/api/v1/analytics/", middleware.ChainMiddleware(proxyTo(os.Getenv("ANALYTICS_SERVICE_URL")), generalMiddlewares...))
 
 	fmt.Println("Running API Gateway....")
 
