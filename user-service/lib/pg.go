@@ -9,7 +9,7 @@ import (
 )
 
 func Pg(query string, params ...any) (pgx.Rows, error) {
-	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
+	conn, err := pgx.Connect(context.Background(), os.Getenv("USER_DATABASE_URL"))
 
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
