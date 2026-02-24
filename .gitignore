@@ -259,3 +259,6 @@ dist/
 
 # Docker services local volumes
 /users-data/
+/exercise-data/
+/workouts-data/
+/analytics-data/

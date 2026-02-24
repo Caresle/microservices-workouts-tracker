@@ -10,6 +10,17 @@ services:
       - "5433:5432"
     volumes:
       - ./users-data:/var/lib/postgresql/data
+  exercise-db:
+    image: postgres:17
+    container_name: exercise-db
+    environment:
+      POSTGRES_DB: exercise_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./exercise-data:/var/lib/postgresql/data
     # healthcheck:
     #   test: ["CMD-SHELL", "pg_isready -U postgres"]
     #   interval: 10s
